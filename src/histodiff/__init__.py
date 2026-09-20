@@ -12,6 +12,7 @@ from .format import (
     from_json,
     side_by_side,
     side_by_side_rows,
+    stat_summary,
     to_json,
     unified_diff,
 )
@@ -44,6 +45,7 @@ __all__ = [
     "side_by_side",
     "side_by_side_rows",
     "split_words",
+    "stat_summary",
     "to_json",
     "unified_diff",
 ]

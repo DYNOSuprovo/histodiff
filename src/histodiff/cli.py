@@ -17,6 +17,7 @@ from .format import (
     _strip_ending,
     _truncate_width,
     side_by_side_rows,
+    stat_summary,
     to_json,
     unified_diff,
 )
@@ -132,6 +133,11 @@ def build_parser() -> argparse.ArgumentParser:
         "--json",
         action="store_true",
         help="output the diff operations and moved blocks as JSON",
+    )
+    formats.add_argument(
+        "--stat",
+        action="store_true",
+        help="output a diffstat-style summary of insertions and deletions",
     )
     output.add_argument(
         "-W",
@@ -582,6 +588,16 @@ def main(
             args.ignore_blank_lines,
             args.context,
         )
+    elif args.stat:
+        chunks = [
+            stat_summary(
+                ops,
+                fromfile=fromfile,
+                tofile=tofile,
+                ignore_blank_lines=args.ignore_blank_lines,
+                context=args.context,
+            )
+        ]
     elif not changed:
         return 0
     else:
