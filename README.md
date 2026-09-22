@@ -7,6 +7,10 @@
 ![Python 3.9+](https://img.shields.io/badge/python-3.9%2B-blue.svg)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/rmnvg/histodiff/blob/main/LICENSE)
 
+<p align="center">
+  <img src="assets/demo.gif" width="800" alt="Terminal demo of histodiff highlighting additions, deletions, and changed words">
+</p>
+
 ## Before and after
 
 A function moved from the top of a 240-line module to the bottom, from
