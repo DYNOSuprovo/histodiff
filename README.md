@@ -7,6 +7,10 @@
 ![Python 3.9+](https://img.shields.io/badge/python-3.9%2B-blue.svg)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/rmnvg/histodiff/blob/main/LICENSE)
 
+<p align="center">
+  <img src="assets/demo.gif" width="800" alt="Terminal demo of histodiff highlighting additions, deletions, and changed words">
+</p>
+
 ## Before and after
 
 A function moved from the top of a 240-line module to the bottom, from
@@ -461,6 +465,9 @@ histodiff old.py new.py -B                        # ignore changes that are only
 histodiff old.py new.py --minimal                 # smallest diff, however long it takes
 cat new.py | histodiff old.py -                   # '-' reads stdin
 ```
+
+Set `NO_COLOR` to any non-empty value to force plain terminal output, even
+when a color-related flag is passed.
 
 `-i` / `--ignore-case` compares lines using Unicode case folding, so `Straße`
 and `STRASSE` compare equal. Combine it with `-b` or `-w` to ignore whitespace

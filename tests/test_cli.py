@@ -289,3 +289,29 @@ def test_cli_stat_ignore_blank_lines(tmp_path, capsys) -> None:
 
     assert main([old, new, "--stat"]) == 1
     assert capsys.readouterr().out == f"{old} -> {new}: 1 insertion(+)\n"
+
+
+@pytest.mark.parametrize(
+    "flag", ["--color", "--color-words", "--color-moved", "--dim-moved"]
+)
+def test_no_color_environment(
+    files,
+    flag: str,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    monkeypatch.setenv("NO_COLOR", "1")
+    assert main([*files, flag]) == 1
+    out, _ = capsys.readouterr()
+    assert "\x1b[" not in out
+
+
+def test_empty_no_color_environment_does_not_disable_color(
+    files,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    monkeypatch.setenv("NO_COLOR", "")
+    assert main([*files, "--color"]) == 1
+    out, _ = capsys.readouterr()
+    assert "\x1b[" in out
