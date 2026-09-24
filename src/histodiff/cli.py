@@ -14,10 +14,10 @@ from ._core import DiffOp
 from .format import (
     _expand_tabs,
     _ignored_blank_opcodes,
+    _stat_summary,
     _strip_ending,
     _truncate_width,
     side_by_side_rows,
-    stat_summary,
     to_json,
     unified_diff,
 )
@@ -590,7 +590,7 @@ def main(
         )
     elif args.stat:
         chunks = [
-            stat_summary(
+            _stat_summary(
                 ops,
                 fromfile=fromfile,
                 tofile=tofile,

@@ -18,7 +18,6 @@ __all__ = [
     "from_json",
     "side_by_side",
     "side_by_side_rows",
-    "stat_summary",
     "to_json",
     "unified_diff",
 ]
@@ -635,10 +634,10 @@ def from_json(data: str | bytes) -> list[DiffOp[Any]]:
 # --------------------------------------------------------------------------
 
 
-def stat_summary(
+def _stat_summary(
     ops: Iterable[DiffOp[Any]],
-    fromfile: str = "---",
-    tofile: str = "+++",
+    fromfile: str,
+    tofile: str,
     *,
     ignore_blank_lines: bool = False,
     context: int = 3,
@@ -651,7 +650,7 @@ def stat_summary(
     """
     ops = list(ops)
     if ignore_blank_lines:
-        _require_text(ops, "stat_summary(ignore_blank_lines=True)")
+        _require_text(ops, "_stat_summary(ignore_blank_lines=True)")
         ignored = _ignored_blank_opcodes(ops, context)
     else:
         ignored = frozenset()
@@ -672,10 +671,7 @@ def stat_summary(
             "1 insertion(+)" if insertions == 1 else f"{insertions} insertions(+)"
         )
     if deletions > 0:
-        parts.append(
-            "1 deletion(-)" if deletions == 1 else f"{deletions} deletions(-)"
-        )
+        parts.append("1 deletion(-)" if deletions == 1 else f"{deletions} deletions(-)")
     if not parts:
         parts = ["0 insertions(+)", "0 deletions(-)"]
     return f"{fromfile} -> {tofile}: {', '.join(parts)}\n"
-

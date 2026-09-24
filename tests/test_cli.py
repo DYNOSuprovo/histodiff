@@ -289,4 +289,3 @@ def test_cli_stat_ignore_blank_lines(tmp_path, capsys) -> None:
 
     assert main([old, new, "--stat"]) == 1
     assert capsys.readouterr().out == f"{old} -> {new}: 1 insertion(+)\n"
-

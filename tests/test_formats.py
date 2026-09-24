@@ -18,7 +18,6 @@ from histodiff import (
     html_diff,
     side_by_side,
     side_by_side_rows,
-    stat_summary,
     to_json,
 )
 from histodiff.cli import (
@@ -33,6 +32,7 @@ from histodiff.cli import (
     main,
     render_side_by_side,
 )
+from histodiff.format import _stat_summary
 from test_cli import write
 from test_readability import python_function
 
@@ -867,30 +867,29 @@ def test_cli_json(tmp_path, capsys) -> None:
 
 def test_stat_summary() -> None:
     ops = diff(["a\n", "b\n", "c\n"], ["a\n", "b2\n", "b3\n", "c\n", "d\n"])
-    assert stat_summary(ops, "old.py", "new.py") == (
+    assert _stat_summary(ops, "old.py", "new.py") == (
         "old.py -> new.py: 3 insertions(+), 1 deletion(-)\n"
     )
 
     identical_ops = diff(["a\n", "b\n"], ["a\n", "b\n"])
-    assert stat_summary(identical_ops, "a.py", "b.py") == (
+    assert _stat_summary(identical_ops, "a.py", "b.py") == (
         "a.py -> b.py: 0 insertions(+), 0 deletions(-)\n"
     )
 
     pure_insert_ops = diff(["a\n"], ["a\n", "b\n"])
-    assert stat_summary(pure_insert_ops, "a", "b") == "a -> b: 1 insertion(+)\n"
+    assert _stat_summary(pure_insert_ops, "a", "b") == "a -> b: 1 insertion(+)\n"
 
     pure_delete_ops = diff(["a\n", "b\n"], ["a\n"])
-    assert stat_summary(pure_delete_ops, "a", "b") == "a -> b: 1 deletion(-)\n"
+    assert _stat_summary(pure_delete_ops, "a", "b") == "a -> b: 1 deletion(-)\n"
 
 
 def test_stat_summary_ignore_blank_lines() -> None:
     ops = diff(["a\n", "b\n"], ["a\n", "\n", "b\n"])
     assert (
-        stat_summary(ops, "a.py", "b.py", ignore_blank_lines=True)
+        _stat_summary(ops, "a.py", "b.py", ignore_blank_lines=True)
         == "a.py -> b.py: 0 insertions(+), 0 deletions(-)\n"
     )
     assert (
-        stat_summary(ops, "a.py", "b.py", ignore_blank_lines=False)
+        _stat_summary(ops, "a.py", "b.py", ignore_blank_lines=False)
         == "a.py -> b.py: 1 insertion(+)\n"
     )
-
